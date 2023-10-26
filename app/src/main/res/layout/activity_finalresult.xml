@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:autoSizeTextType="uniform"
-            android:text="@string/backTitle" />
+            android:text="@string/back_title" />
 
     </LinearLayout>
 

@@ -29,6 +29,6 @@
     <string name="win_count">勝った数：%1$d</string>
     <string name="lose_count">負けた数：%1$d</string>
     <string name="draw_count">引き分け数：%1$d</string>
-    <string name="backTitle">タイトルへ</string>
-    <string name="title_activity_nav_controller">NavControllerActivity</string>
+    <string name="back_title">タイトルへ</string>
+    <string name="title_activity_main2">MainActivity2</string>
 </resources>
