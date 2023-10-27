@@ -4,30 +4,75 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.sp
 
 class HalfwayProgressActivity : AppCompatActivity() {
+    private val battleCount:Int = CountApp().getCount()
+    private val countWin:Int = CountApp().getWinCount()
+    private val countLose:Int = CountApp().getLoseCount()
+    private val countDraw:Int = CountApp().getDrawCount()
     @SuppressLint("StringFormatMatches", "SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_halfway)
+        setContent {
+            HalfwayProgress()
+        }
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-
-//        val battleCount:Int = CountApp().getCount()
-//        val countWin:Int = CountApp().getWinCount()
-//        val countLose:Int = CountApp().getLoseCount()
-//        val countDraw:Int = CountApp().getDrawCount()
-//
-//        binding.battleCount.text = getString(R.string.halfway_sub,battleCount)
-//
-//        binding.countWin.text = getString(R.string.win_count,countWin)
-//        binding.countLose.text = getString(R.string.lose_count,countLose)
-//        binding.countDraw.text = getString(R.string.draw_count,countDraw)
-//
-//        val intent = Intent(application,MainActivity::class.java)
-//        binding.nextBattle.setOnClickListener {
-//            startActivity(intent)
-//        }
+    }
+    @Composable
+    fun HalfwayProgress() {
+        Column(modifier = Modifier.fillMaxSize()) {
+            Text(
+                text = stringResource(id = R.string.halfway_title),
+                fontSize = 30.sp,
+                modifier = Modifier
+                    .weight(2f, fill = true)
+                    .align(Alignment.CenterHorizontally)
+            )
+            Text(
+                text = stringResource(id = R.string.halfway_sub, battleCount),
+                fontSize = 30.sp,
+                modifier = Modifier
+                    .weight(3f, fill = true)
+                    .align(Alignment.CenterHorizontally)
+            )
+            Text(
+                text = stringResource(id = R.string.win_count, countWin),
+                modifier = Modifier
+                    .weight(1f, fill = true)
+                    .fillMaxWidth()
+            )
+            Text(
+                text = stringResource(id = R.string.win_count, countLose),
+                modifier = Modifier
+                    .weight(1f, fill = true)
+                    .fillMaxWidth()
+            )
+            Text(
+                text = stringResource(id = R.string.win_count, countDraw),
+                modifier = Modifier
+                    .weight(1f, fill = true)
+                    .fillMaxWidth()
+            )
+            Button(onClick = { moveMain() }, modifier = Modifier.fillMaxWidth()) {
+                Text(text = stringResource(id = R.string.next_battle))
+            }
+        }
+    }
+    private fun moveMain(){
+        val intent = Intent(application,MainActivity::class.java)
+        startActivity(intent)
     }
 
 }

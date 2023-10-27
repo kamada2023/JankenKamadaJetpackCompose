@@ -31,4 +31,6 @@
     <string name="draw_count">引き分け数：%1$d</string>
     <string name="back_title">タイトルへ</string>
     <string name="title_activity_main2">MainActivity2</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
