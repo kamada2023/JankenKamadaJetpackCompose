@@ -4,11 +4,12 @@
     <string name="total_result">%1$d勝ち%2$d負け%3$d引き分け</string>
     <string name="battle_format">対戦形式</string>
     <string name="round_robin_battle">総当たり戦</string>
+    <string name="star_battle">星取り　戦</string>
     <string name="explanation_rule">ルール</string>
-    <string name="rule1">1.対戦形式は任意で1～10まで対戦できます\n2.対戦は勝敗に問わずカウントします\n3.設定した値まで終了しません\n4.結果は総合的に判断します\n\n\n
-    </string>
+    <string name="rule_robin">1.対戦形式は任意で1～10まで対戦できます\n2.対戦は勝敗に問わずカウントします\n3.設定した値まで終了しません\n4.結果は総合的に判断します\n\n\n</string>
+    <string name="rule_star" >1.対戦形式は任意で1～10まで対戦できます\n2.設定した回戦数の半分以上を満たした\n場合終了します\3.設定した回数を達した場合終了します\n4.設定した回数が半分以上があいこだった\n場合は引き分けとします</string>
     <string name="game_start">ゲームスタート</string>
-    <string name="round1">回数：1</string>
+    <string name="round1">回数：%1$d</string>
     <string name="rounds">第%1$d戦目：じゃーんけーん......</string>
     <string name="title">じゃーんけーん......</string>
     <string name="subtitle">画像をタップしてね</string>
@@ -31,6 +32,4 @@
     <string name="draw_count">引き分け数：%1$d</string>
     <string name="back_title">タイトルへ</string>
     <string name="title_activity_main2">MainActivity2</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -1,11 +1,13 @@
 package com.example.jankenkamadajetpackcompose
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
@@ -37,22 +39,9 @@ class TitleActivity : AppCompatActivity() {
     @Composable
     @Preview(showBackground = true)
     fun Title() {
-        //初回コンポーズ時実行
-        val numOfWin by remember { mutableStateOf(countApp.getNumOfWins())}
-        val numOfLose by remember { mutableStateOf(countApp.getNumOfWins())}
-        val numOfDraw by remember { mutableStateOf(countApp.getNumOfWins())}
-
-        val clear = remember(numOfWin,numOfLose,numOfDraw) {
-            countApp.clearTotalResult()
-            mutableStateOf(countApp.getNumOfWins())
-            mutableStateOf(countApp.getNumOfLoses())
-            mutableStateOf(countApp.getNumOfDraws())
-        }
-
         ConstraintLayout(modifier = Modifier.fillMaxSize()) {
             val (button, title, topImage,
-                speech, result, reset
-            ) = createRefs()
+                speech, result) = createRefs()
             Image(painter = painterResource(id = R.drawable.title),
                 contentDescription = null,
                 modifier = Modifier
@@ -80,27 +69,13 @@ class TitleActivity : AppCompatActivity() {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 })
-            Text(text = stringResource(R.string.total_result, numOfWin, numOfLose, numOfDraw
-            ), fontSize = 27.sp,
-                modifier = Modifier.constrainAs(result) {
-                    top.linkTo(speech.bottom)
-                    bottom.linkTo(reset.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                })
-            Button(
-                onClick = { clear++ },
-                shape = MaterialTheme.shapes.small,
-                modifier = Modifier
-                    .constrainAs(reset) {
-                        top.linkTo(result.bottom)
-                        bottom.linkTo(button.top)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    }
-            ) {
-                Text(text = stringResource(R.string.reset), fontSize = 36.sp)
-            }
+
+            RememberSample(modifier = Modifier.constrainAs(result) {
+                top.linkTo(speech.bottom)
+                bottom.linkTo(button.top)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            })
 
             Button(
                 onClick = { moveSelect() },
@@ -108,7 +83,7 @@ class TitleActivity : AppCompatActivity() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .constrainAs(button) {
-                        top.linkTo(reset.bottom)
+                        top.linkTo(result.bottom)
                         bottom.linkTo(parent.bottom)
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
@@ -120,9 +95,41 @@ class TitleActivity : AppCompatActivity() {
 
         }
     }
-    private fun moveSelect(){
-        val intent = Intent(application,SelectActivity::class.java)
+
+    private fun moveSelect() {
+        val intent = Intent(application, SelectActivity::class.java)
         startActivity(intent)
     }
 
+
+    @SuppressLint("UnrememberedMutableState", "RememberReturnType")
+    @Composable
+    fun RememberSample(modifier: Modifier) {
+        //初回コンポーズ時実行
+        val clearWin by mutableStateOf(countApp.getNumOfWins())
+        val clearLose by mutableStateOf(countApp.getNumOfLoses())
+        val clearDraw by mutableStateOf(countApp.getNumOfDraws())
+        var count by remember { mutableStateOf(0) }
+
+        Column(modifier = modifier) {
+            Text(
+                text = stringResource(
+                    R.string.total_result,
+                    clearWin,
+                    clearLose,
+                    clearDraw
+                ), fontSize = 27.sp
+            )
+
+            Button(
+                onClick = {
+                    CountApp().clearTotalResult();
+                    count++;
+                },
+                shape = MaterialTheme.shapes.small,
+            ) {
+                Text(text = stringResource(R.string.reset), fontSize = 36.sp)
+            }
+        }
+    }
 }

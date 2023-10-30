@@ -140,23 +140,14 @@ class ResultActivity : AppCompatActivity() {
     @Composable
     fun ResultText(modifier: Modifier, user: Int,cpu: Int,fontSize: Int) {
         if (user==cpu){
-            if (CountApp().getAddCount() <= CountApp().getCount()){
-                CountApp().setDrawCount()
-            }
             Text(text = stringResource(id = R.string.draw),
                 fontSize = fontSize.sp,
                 modifier = modifier)
         }else if ((user==2 && cpu==0) || ((user+1)==cpu)){
-            if (CountApp().getAddCount() <= CountApp().getCount()){
-                CountApp().setWinCount()
-            }
             Text(text = stringResource(id = R.string.win),
                 fontSize = fontSize.sp,
                 modifier = modifier)
         }else{
-            if (CountApp().getAddCount() <= CountApp().getCount()){
-                CountApp().setLoseCount()
-            }
             Text(text = stringResource(id = R.string.lose),
                 fontSize = fontSize.sp,
                 modifier = modifier)

@@ -2,7 +2,6 @@ package com.example.jankenkamadajetpackcompose
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -97,15 +96,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
     private fun clickGu(){
-        intent.putExtra("hand",MyHand.GU)
+        intent.putExtra("hand",MyHand.GU.myHand)
         startActivity(Intent(application,ResultActivity::class.java))
     }
     private fun clickCh(){
-        intent.putExtra("hand",MyHand.CH)
+        intent.putExtra("hand",MyHand.CH.myHand)
         startActivity(Intent(application,ResultActivity::class.java))
     }
     private fun clickPa(){
-        intent.putExtra("hand",MyHand.PA)
+        intent.putExtra("hand",MyHand.PA.myHand)
         startActivity(Intent(application,ResultActivity::class.java))
     }
     @Composable

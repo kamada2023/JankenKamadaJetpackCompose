@@ -54,13 +54,13 @@ class HalfwayProgressActivity : AppCompatActivity() {
                     .fillMaxWidth()
             )
             Text(
-                text = stringResource(id = R.string.win_count, countLose),
+                text = stringResource(id = R.string.lose_count, countLose),
                 modifier = Modifier
                     .weight(1f, fill = true)
                     .fillMaxWidth()
             )
             Text(
-                text = stringResource(id = R.string.win_count, countDraw),
+                text = stringResource(id = R.string.draw_count, countDraw),
                 modifier = Modifier
                     .weight(1f, fill = true)
                     .fillMaxWidth()

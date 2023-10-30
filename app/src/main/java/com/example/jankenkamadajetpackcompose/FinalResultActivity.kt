@@ -53,13 +53,13 @@ class FinalResultActivity : AppCompatActivity() {
                     .fillMaxWidth()
             )
             Text(
-                text = stringResource(id = R.string.win_count, countLose),
+                text = stringResource(id = R.string.lose_count, countLose),
                 modifier = Modifier
                     .weight(1f, fill = true)
                     .fillMaxWidth()
             )
             Text(
-                text = stringResource(id = R.string.win_count, countDraw),
+                text = stringResource(id = R.string.draw_count, countDraw),
                 modifier = Modifier
                     .weight(1f, fill = true)
                     .fillMaxWidth()
@@ -77,32 +77,33 @@ class FinalResultActivity : AppCompatActivity() {
     @Composable
     fun ResultImage(modifier: Modifier){
         if (countWin > countLose){
+            CountApp().setNumOfWins()
             Image(painter = painterResource(id = R.drawable.youwin),
                 contentDescription = null,
                 modifier = modifier)
-            CountApp().setNumOfWins()
         }else if (countLose > countWin){
+            CountApp().setNumOfLoses()
             Image(painter = painterResource(id = R.drawable.youlose),
                 contentDescription = null,
                 modifier = modifier)
-            CountApp().setNumOfLoses()
         }else{
+            CountApp().setNumOfDraws()
             Image(painter = painterResource(id = R.drawable.drawgame),
                 contentDescription = null,
                 modifier = modifier)
-            CountApp().setNumOfDraws()
         }
 
         if (CountApp().getBattleFormat()==1){
+            CountApp().setNumOfDraws()
             if (countDraw > (CountApp().getCount()/2)){
                 Image(painter = painterResource(id = R.drawable.drawgame),
                     contentDescription = null,
                     modifier = modifier)
-                CountApp().setNumOfDraws()
             }
         }
     }
     private fun moveTitle(){
+        CountApp().clearResult()
         val intent = Intent(application,TitleActivity::class.java)
         startActivity(intent)
     }
