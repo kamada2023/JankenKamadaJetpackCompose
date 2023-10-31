@@ -18,10 +18,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 
 class HalfwayProgressActivity : AppCompatActivity() {
-    private val battleCount:Int = CountApp().getCount()
-    private val countWin:Int = CountApp().getWinCount()
-    private val countLose:Int = CountApp().getLoseCount()
-    private val countDraw:Int = CountApp().getDrawCount()
+    private val countApp = CountApp.create()
+    private val battleCount:Int = countApp.getAddCount()
+    private val countWin:Int = countApp.getWinCount()
+    private val countLose:Int = countApp.getLoseCount()
+    private val countDraw:Int = countApp.getDrawCount()
     @SuppressLint("StringFormatMatches", "SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

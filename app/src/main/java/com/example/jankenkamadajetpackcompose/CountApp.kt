@@ -1,9 +1,7 @@
 package com.example.jankenkamadajetpackcompose
 
-import android.app.Application
-
-class CountApp : Application(){
-    companion object{
+class CountApp {
+    companion object CountUp{
         private var Count:Int = 1
         private var AddCount:Int = 0
         private var WinCount:Int = 0
@@ -13,10 +11,7 @@ class CountApp : Application(){
         private var Num_Of_Wins:Int = 0
         private var Num_Of_Loses:Int = 0
         private var Num_Of_Draws:Int = 0
-    }
-
-    override fun onCreate() {
-        super.onCreate()
+        fun create(): CountApp = CountApp()
     }
 
     fun getCount():Int{
@@ -87,4 +82,5 @@ class CountApp : Application(){
         Num_Of_Loses = 0
         Num_Of_Draws = 0
     }
+
 }

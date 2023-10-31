@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
-        android:name=".CountApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -13,11 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.JankenkamadaJetpackCompose"
         tools:targetApi="31">
-        <activity
-            android:name=".MainActivity2"
-            android:exported="false"
-            android:label="@string/title_activity_main2"
-            android:theme="@style/Theme.JankenkamadaJetpackCompose" />
         <activity
             android:name=".TitleActivity"
             android:exported="true">

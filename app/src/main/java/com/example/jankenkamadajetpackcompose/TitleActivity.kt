@@ -16,7 +16,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -27,7 +26,6 @@ import androidx.constraintlayout.compose.ConstraintLayout
 
 
 class TitleActivity : AppCompatActivity() {
-    private val countApp = CountApp()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
@@ -105,11 +103,17 @@ class TitleActivity : AppCompatActivity() {
     @SuppressLint("UnrememberedMutableState", "RememberReturnType")
     @Composable
     fun RememberSample(modifier: Modifier) {
+        val countApp = CountApp.create()
         //初回コンポーズ時実行
-        val clearWin by mutableStateOf(countApp.getNumOfWins())
-        val clearLose by mutableStateOf(countApp.getNumOfLoses())
-        val clearDraw by mutableStateOf(countApp.getNumOfDraws())
-        var count by remember { mutableStateOf(0) }
+        var clearWin by mutableStateOf(
+            countApp.getNumOfWins()
+        )
+        var clearLose by mutableStateOf(
+            countApp.getNumOfLoses()
+        )
+        var clearDraw by mutableStateOf(
+            countApp.getNumOfDraws()
+        )
 
         Column(modifier = modifier) {
             Text(
@@ -123,13 +127,16 @@ class TitleActivity : AppCompatActivity() {
 
             Button(
                 onClick = {
-                    CountApp().clearTotalResult();
-                    count++;
+                    countApp.clearTotalResult()
+                    clearWin = 0
+                    clearLose = 0
+                    clearDraw = 0
                 },
                 shape = MaterialTheme.shapes.small,
             ) {
                 Text(text = stringResource(R.string.reset), fontSize = 36.sp)
             }
+
         }
     }
 }

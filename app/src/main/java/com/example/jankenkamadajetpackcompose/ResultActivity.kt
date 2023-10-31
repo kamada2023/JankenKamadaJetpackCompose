@@ -25,21 +25,36 @@ import androidx.compose.ui.unit.sp
 import kotlin.random.Random
 
 class ResultActivity : AppCompatActivity() {
+
+    private val countApp = CountApp.create()
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val userId: Int = intent.getIntExtra("hand",0)
-        CountApp().setAddCount()
+        countApp.setAddCount()
+        val seed : Long = System.currentTimeMillis()
+        val cpu :Int = Random(seed).nextInt(3)
+        if (userId==cpu){
+            if (countApp.getAddCount() <= countApp.getCount()){
+                countApp.setDrawCount()
+            }
+        }else if ((userId==2 && cpu==0) || ((userId+1)==cpu)){
+            if (countApp.getAddCount() <= countApp.getCount()){
+                countApp.setWinCount()
+            }
+        }else{
+            if (countApp.getAddCount() <= countApp.getCount()){
+                countApp.setLoseCount()
+            }
+        }
         setContent {
-            ResultAct(user = userId)
+            ResultAct(user = userId, cpu = cpu)
         }
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 
     @Composable
-    fun ResultAct(user: Int) {
-        val seed : Long = System.currentTimeMillis()
-        val cpu :Int = Random(seed).nextInt(3)
+    fun ResultAct(user: Int,cpu: Int) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -78,9 +93,9 @@ class ResultActivity : AppCompatActivity() {
                 modifier = Modifier.fillMaxWidth()
             )
             {
-                Text(text = if (CountApp().getCount() == CountApp().getAddCount()) {
+                Text(text = if (countApp.getCount() == countApp.getAddCount()) {
                     stringResource(id = R.string.next_result)
-                }else if (CountApp().getAddCount() == 1) {
+                }else if (countApp.getAddCount() == 1) {
                     stringResource(id = R.string.next_battle)
                 }else {
                     stringResource(id = R.string.next_scene)
@@ -114,23 +129,14 @@ class ResultActivity : AppCompatActivity() {
     @Composable
     fun ResultImage(modifier: Modifier, user: Int,cpu: Int) {
         if (user==cpu){
-            if (CountApp().getAddCount() <= CountApp().getCount()){
-                CountApp().setDrawCount()
-            }
             Image(painter = painterResource(id = R.drawable.draw),
                 contentDescription = null,
                 modifier = modifier)
         }else if ((user==2 && cpu==0) || ((user+1)==cpu)){
-            if (CountApp().getAddCount() <= CountApp().getCount()){
-                CountApp().setWinCount()
-            }
             Image(painter = painterResource(id = R.drawable.win),
                 contentDescription = null,
                 modifier = modifier)
         }else{
-            if (CountApp().getAddCount() <= CountApp().getCount()){
-                CountApp().setLoseCount()
-            }
             Image(painter = painterResource(id = R.drawable.lose),
                 contentDescription = null,
                 modifier = modifier)
@@ -159,20 +165,20 @@ class ResultActivity : AppCompatActivity() {
         val first = Intent(application,MainActivity::class.java)
         val end = Intent(application,FinalResultActivity::class.java)
         val con = Intent(application,HalfwayProgressActivity::class.java)
-        val game:Int = CountApp().getCount()
-        val rounds:Int = CountApp().getAddCount()
-        val win:Int = CountApp().getWinCount()
-        val lose:Int = CountApp().getLoseCount()
+        val game:Int = countApp.getCount()
+        val rounds:Int = countApp.getAddCount()
+        val win:Int = countApp.getWinCount()
+        val lose:Int = countApp.getLoseCount()
 
         conOrEnd = if (rounds==1){ first }
         else{ con }
 
-        if (CountApp().getBattleFormat() == 1){
+        if (countApp.getBattleFormat() == 1){
             if ((win-lose) > (game-rounds)){
                 conOrEnd = end
             }else if ((lose-win) > (game-rounds)){
                 conOrEnd = end
-            }else if (CountApp().getDrawCount() > (game/2)){
+            }else if (countApp.getDrawCount() > (game/2)){
                 conOrEnd = end
             }
         }

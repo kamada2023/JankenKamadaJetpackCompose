@@ -1,22 +1,13 @@
 package com.example.jankenkamadajetpackcompose
 
-import android.annotation.SuppressLint
 import android.content.Intent
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.draggable
-import androidx.compose.foundation.gestures.rememberDraggableState
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
@@ -26,17 +17,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import kotlin.math.roundToInt
 
 class SelectActivity : AppCompatActivity() {
-    @SuppressLint("SetTextI18n", "SourceLockedOrientationActivity", "RestrictedApi")
+    private val countApp = CountApp.create()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -47,7 +34,7 @@ class SelectActivity : AppCompatActivity() {
     @Preview(showBackground = true)
     fun Select() {
         var mode by remember { mutableStateOf(0) }
-        var count by remember { mutableStateOf(0) }
+        var count by remember { mutableStateOf(1) }
 
         ConstraintLayout(modifier = Modifier.fillMaxSize()) {
             val (battleFormat, gameMode, gameCount,
@@ -74,7 +61,7 @@ class SelectActivity : AppCompatActivity() {
                     Text(text = stringResource(id = R.string.star_battle),
                         fontSize = 40.sp)
                 }
-                Slider(value = 0f, onValueChange = { mode++ },
+                Slider(value = mode.toFloat(), onValueChange = { mode = it.toInt() },
                     enabled = true,
                     valueRange = 0f .. 1f,
                     steps = 1)
@@ -88,12 +75,16 @@ class SelectActivity : AppCompatActivity() {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }) {
-                Text(text = stringResource(id = R.string.round1,count),
-                    fontSize = 27.sp)
-                Slider(value = 0f, onValueChange = { _, -> count++ },
-                    valueRange = 0f .. 10f,
+                Slider(value = count.toFloat(), onValueChange = { count = it.toInt() },
+                    valueRange = 1f .. 10f,
                     enabled = true,
-                    steps = 9)
+                    steps = 9,
+                    modifier = Modifier.weight(3.3f,false)
+                )
+                Text(text = stringResource(id = R.string.round1,count),
+                    fontSize = 27.sp,
+                    modifier = Modifier.weight(1.7f,false),
+                )
             }
             Text(text = stringResource(id = R.string.explanation_rule),
                 fontSize = 19.sp,
@@ -112,15 +103,16 @@ class SelectActivity : AppCompatActivity() {
                 stringResource(id = R.string.rule_star)
             },
                 fontSize = 19.sp,
-                modifier = Modifier.constrainAs(ruleExp) {
+                modifier = Modifier.fillMaxSize()
+                    .constrainAs(ruleExp) {
                     top.linkTo(rule.bottom)
-                    bottom.linkTo(gameStart.top)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 })
-            Button(onClick = { moveMain() },
+            Button(onClick = { countApp.setCount(count)
+                countApp.setBattleFormat(mode)
+                moveMain() },
                 modifier = Modifier.constrainAs(gameStart) {
-                    top.linkTo(rule.bottom)
                     bottom.linkTo(parent.bottom)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
@@ -132,22 +124,5 @@ class SelectActivity : AppCompatActivity() {
     private fun moveMain(){
         val intent = Intent(application,MainActivity::class.java)
         startActivity(intent)
-    }
-
-    @Composable
-    fun SeekBar() {
-        var offsetX by remember { mutableStateOf(0f) }
-        Box(
-            modifier = Modifier
-                .offset { IntOffset(offsetX.roundToInt(), 0) }
-                .draggable(
-                    orientation = Orientation.Horizontal,
-                    state = rememberDraggableState { delta ->
-                        offsetX += delta
-                    }
-                )
-                .size(30.dp)
-                .background(Color.Blue, CircleShape)
-        )
     }
 }

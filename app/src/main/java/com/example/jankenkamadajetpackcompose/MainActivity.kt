@@ -1,6 +1,5 @@
 package com.example.jankenkamadajetpackcompose
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -24,7 +23,6 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 
 class MainActivity : AppCompatActivity() {
-    @SuppressLint("UseCompatLoadingForDrawables", "SourceLockedOrientationActivity", "StringFormatMatches")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -96,20 +94,24 @@ class MainActivity : AppCompatActivity() {
         }
     }
     private fun clickGu(){
+        val intent = Intent(application,ResultActivity::class.java)
         intent.putExtra("hand",MyHand.GU.myHand)
-        startActivity(Intent(application,ResultActivity::class.java))
+        startActivity(intent)
     }
     private fun clickCh(){
+        val intent = Intent(application,ResultActivity::class.java)
         intent.putExtra("hand",MyHand.CH.myHand)
-        startActivity(Intent(application,ResultActivity::class.java))
+        startActivity(intent)
     }
     private fun clickPa(){
+        val intent = Intent(application,ResultActivity::class.java)
         intent.putExtra("hand",MyHand.PA.myHand)
-        startActivity(Intent(application,ResultActivity::class.java))
+        startActivity(intent)
     }
     @Composable
     fun BattleShout(modifier: Modifier,fontSize: TextUnit){
-        val count = CountApp().getAddCount()
+        val countApp = CountApp.create()
+        val count = countApp.getAddCount()
         if (count == 0) {
             Text(text = stringResource(id = R.string.title),
                 fontSize = fontSize,

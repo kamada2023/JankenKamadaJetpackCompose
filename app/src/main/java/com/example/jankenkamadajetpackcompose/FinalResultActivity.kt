@@ -20,31 +20,59 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 class FinalResultActivity : AppCompatActivity() {
-    private val countWin:Int = CountApp().getWinCount()
-    private val countLose:Int = CountApp().getLoseCount()
-    private val countDraw:Int = CountApp().getDrawCount()
+    private val countApp = CountApp.create()
+    private val countWin:Int = countApp.getWinCount()
+    private val countLose:Int = countApp.getLoseCount()
+    private val countDraw:Int = countApp.getDrawCount()
+    enum class Result(val result: Int) {
+        WIN(0),
+        LOSE(1),
+        DRAW(2)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        var finResult:Int
+        finResult = if (countWin > countLose){
+            countApp.setNumOfWins()
+            Result.WIN.result
+        }else if (countLose > countWin){
+            countApp.setNumOfLoses()
+            Result.LOSE.result
+        }else{
+            countApp.setNumOfDraws()
+            Result.DRAW.result
+        }
+
+        if (countApp.getBattleFormat()==1){
+            if (countDraw > (countApp.getCount()/2)){
+                countApp.setNumOfDraws()
+                finResult = Result.DRAW.result
+            }
+        }
         setContent {
-            FinalResult()
+            FinalResult(finResult)
         }
     }
+
     @Composable
-    fun FinalResult() {
+    fun FinalResult(finResult: Int) {
         Column(modifier = Modifier
             .fillMaxSize()
             .padding(20.dp)) {
             Text(
                 text = stringResource(id = R.string.result),
                 modifier = Modifier
-                    .weight(2f, fill = true)
+                    .weight(1f, fill = true)
                     .align(Alignment.CenterHorizontally),
                 fontSize = 30.sp
             )
             ResultImage(
                 modifier = Modifier
-                    .weight(1f, fill = true)
                     .fillMaxWidth()
+                    .weight(2f, fill = true)
+                    .fillMaxWidth(),
+                result = finResult
             )
             Text(
                 text = stringResource(id = R.string.win_count, countWin),
@@ -75,27 +103,19 @@ class FinalResultActivity : AppCompatActivity() {
         }
     }
     @Composable
-    fun ResultImage(modifier: Modifier){
-        if (countWin > countLose){
-            CountApp().setNumOfWins()
-            Image(painter = painterResource(id = R.drawable.youwin),
-                contentDescription = null,
-                modifier = modifier)
-        }else if (countLose > countWin){
-            CountApp().setNumOfLoses()
-            Image(painter = painterResource(id = R.drawable.youlose),
-                contentDescription = null,
-                modifier = modifier)
-        }else{
-            CountApp().setNumOfDraws()
-            Image(painter = painterResource(id = R.drawable.drawgame),
-                contentDescription = null,
-                modifier = modifier)
-        }
-
-        if (CountApp().getBattleFormat()==1){
-            CountApp().setNumOfDraws()
-            if (countDraw > (CountApp().getCount()/2)){
+    fun ResultImage(modifier: Modifier,result: Int){
+        when (result) {
+            Result.WIN.result -> {
+                Image(painter = painterResource(id = R.drawable.youwin),
+                    contentDescription = null,
+                    modifier = modifier)
+            }
+            Result.LOSE.result -> {
+                Image(painter = painterResource(id = R.drawable.youlose),
+                    contentDescription = null,
+                    modifier = modifier)
+            }
+            else -> {
                 Image(painter = painterResource(id = R.drawable.drawgame),
                     contentDescription = null,
                     modifier = modifier)
@@ -103,7 +123,7 @@ class FinalResultActivity : AppCompatActivity() {
         }
     }
     private fun moveTitle(){
-        CountApp().clearResult()
+        countApp.clearResult()
         val intent = Intent(application,TitleActivity::class.java)
         startActivity(intent)
     }
