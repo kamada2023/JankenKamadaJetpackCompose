@@ -21,35 +21,38 @@ import androidx.compose.ui.unit.sp
 
 class FinalResultActivity : AppCompatActivity() {
     private val countApp = CountApp.create()
-    private val countWin:Int = countApp.getWinCount()
-    private val countLose:Int = countApp.getLoseCount()
-    private val countDraw:Int = countApp.getDrawCount()
-    enum class Result(val result: Int) {
-        WIN(0),
-        LOSE(1),
-        DRAW(2)
+    private val countWin: Int = countApp.getWinCount()
+    private val countLose: Int = countApp.getLoseCount()
+    private val countDraw: Int = countApp.getDrawCount()
+
+    enum class Result {
+        WIN,
+        LOSE,
+        DRAW
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        var finResult:Int
-        finResult = if (countWin > countLose){
+        var finResult: Int
+        finResult = if (countWin > countLose) {
             countApp.setNumOfWins()
-            Result.WIN.result
-        }else if (countLose > countWin){
+            Result.WIN.ordinal
+        } else if (countLose > countWin) {
             countApp.setNumOfLoses()
-            Result.LOSE.result
-        }else{
+            Result.LOSE.ordinal
+        } else {
             countApp.setNumOfDraws()
-            Result.DRAW.result
+            Result.DRAW.ordinal
         }
 
-        if (countApp.getBattleFormat()==1){
-            if (countDraw > (countApp.getCount()/2)){
+        if (countApp.getBattleFormat() == 1) {
+            if (countDraw > (countApp.getCount() / 2)) {
                 countApp.setNumOfDraws()
-                finResult = Result.DRAW.result
+                finResult = Result.DRAW.ordinal
             }
         }
+
         setContent {
             FinalResult(finResult)
         }
@@ -57,9 +60,11 @@ class FinalResultActivity : AppCompatActivity() {
 
     @Composable
     fun FinalResult(finResult: Int) {
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(20.dp)) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(20.dp)
+        ) {
             Text(
                 text = stringResource(id = R.string.result),
                 modifier = Modifier
@@ -67,6 +72,7 @@ class FinalResultActivity : AppCompatActivity() {
                     .align(Alignment.CenterHorizontally),
                 fontSize = 30.sp
             )
+
             ResultImage(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -74,24 +80,28 @@ class FinalResultActivity : AppCompatActivity() {
                     .fillMaxWidth(),
                 result = finResult
             )
+
             Text(
                 text = stringResource(id = R.string.win_count, countWin),
                 modifier = Modifier
                     .weight(1f, fill = true)
                     .fillMaxWidth()
             )
+
             Text(
                 text = stringResource(id = R.string.lose_count, countLose),
                 modifier = Modifier
                     .weight(1f, fill = true)
                     .fillMaxWidth()
             )
+
             Text(
                 text = stringResource(id = R.string.draw_count, countDraw),
                 modifier = Modifier
                     .weight(1f, fill = true)
                     .fillMaxWidth()
             )
+
             Button(
                 onClick = { moveTitle() },
                 modifier = Modifier
@@ -102,29 +112,39 @@ class FinalResultActivity : AppCompatActivity() {
             }
         }
     }
+
     @Composable
-    fun ResultImage(modifier: Modifier,result: Int){
+    fun ResultImage(modifier: Modifier, result: Int) {
         when (result) {
-            Result.WIN.result -> {
-                Image(painter = painterResource(id = R.drawable.youwin),
+            Result.WIN.ordinal -> {
+                Image(
+                    painter = painterResource(id = R.drawable.youwin),
                     contentDescription = null,
-                    modifier = modifier)
+                    modifier = modifier
+                )
             }
-            Result.LOSE.result -> {
-                Image(painter = painterResource(id = R.drawable.youlose),
+
+            Result.LOSE.ordinal -> {
+                Image(
+                    painter = painterResource(id = R.drawable.youlose),
                     contentDescription = null,
-                    modifier = modifier)
+                    modifier = modifier
+                )
             }
-            else -> {
-                Image(painter = painterResource(id = R.drawable.drawgame),
+
+            Result.DRAW.ordinal -> {
+                Image(
+                    painter = painterResource(id = R.drawable.drawgame),
                     contentDescription = null,
-                    modifier = modifier)
+                    modifier = modifier
+                )
             }
         }
     }
-    private fun moveTitle(){
+
+    private fun moveTitle() {
         countApp.clearResult()
-        val intent = Intent(application,TitleActivity::class.java)
+        val intent = Intent(application, TitleActivity::class.java)
         startActivity(intent)
     }
 }

@@ -2,7 +2,6 @@ package com.example.jankenkamadajetpackcompose
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -20,7 +19,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 
@@ -28,19 +26,26 @@ import androidx.constraintlayout.compose.ConstraintLayout
 class TitleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         setContent {
             Title()
         }
     }
 
     @Composable
-    @Preview(showBackground = true)
     fun Title() {
-        ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-            val (button, title, topImage,
-                speech, result) = createRefs()
-            Image(painter = painterResource(id = R.drawable.title),
+        ConstraintLayout(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            val (
+                button,
+                title,
+                topImage,
+                speech,
+                result
+            ) = createRefs()
+
+            Image(
+                painter = painterResource(id = R.drawable.title),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -50,7 +55,10 @@ class TitleActivity : AppCompatActivity() {
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
                     })
-            Image(painter = painterResource(id = R.drawable.main), contentDescription = null,
+
+            Image(
+                painter = painterResource(id = R.drawable.main),
+                contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
                     .constrainAs(topImage) {
@@ -58,22 +66,28 @@ class TitleActivity : AppCompatActivity() {
                         bottom.linkTo(speech.top)
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
-                    })
-            Text(text = stringResource(R.string.chara_speech),
+                    }
+            )
+
+            Text(
+                text = stringResource(R.string.chara_speech),
                 fontSize = 40.sp,
                 modifier = Modifier.constrainAs(speech) {
                     top.linkTo(topImage.bottom)
                     bottom.linkTo(result.top)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                })
+                }
+            )
 
-            RememberSample(modifier = Modifier.constrainAs(result) {
-                top.linkTo(speech.bottom)
-                bottom.linkTo(button.top)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-            })
+            ResetButton(
+                modifier = Modifier.constrainAs(result) {
+                    top.linkTo(speech.bottom)
+                    bottom.linkTo(button.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }
+            )
 
             Button(
                 onClick = { moveSelect() },
@@ -88,9 +102,7 @@ class TitleActivity : AppCompatActivity() {
                     }
             ) {
                 Text(text = stringResource(R.string.next_scene), fontSize = 36.sp)
-
             }
-
         }
     }
 
@@ -99,10 +111,9 @@ class TitleActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-
     @SuppressLint("UnrememberedMutableState", "RememberReturnType")
     @Composable
-    fun RememberSample(modifier: Modifier) {
+    fun ResetButton(modifier: Modifier) {
         val countApp = CountApp.create()
         //初回コンポーズ時実行
         var clearWin by mutableStateOf(
@@ -122,7 +133,8 @@ class TitleActivity : AppCompatActivity() {
                     clearWin,
                     clearLose,
                     clearDraw
-                ), fontSize = 27.sp
+                ),
+                fontSize = 27.sp
             )
 
             Button(
@@ -136,7 +148,6 @@ class TitleActivity : AppCompatActivity() {
             ) {
                 Text(text = stringResource(R.string.reset), fontSize = 36.sp)
             }
-
         }
     }
 }

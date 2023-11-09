@@ -18,7 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 
@@ -30,63 +29,86 @@ class SelectActivity : AppCompatActivity() {
             Select()
         }
     }
+
     @Composable
-    @Preview(showBackground = true)
     fun Select() {
         var mode by remember { mutableStateOf(0) }
         var count by remember { mutableStateOf(1) }
+        var ruleText: String
 
-        ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-            val (battleFormat, gameMode, gameCount,
-                rule, ruleExp, gameStart) = createRefs()
-            Text(text = stringResource(id = R.string.battle_format), fontSize = 30.sp,
+        ConstraintLayout(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            val (
+                battleFormat,
+                gameMode,
+                gameCount,
+                rule,
+                ruleExp,
+                gameStart
+            ) = createRefs()
+
+            Text(
+                text = stringResource(id = R.string.battle_format),
+                fontSize = 30.sp,
                 modifier = Modifier.constrainAs(battleFormat) {
                     top.linkTo(parent.top)
                     bottom.linkTo(gameMode.top)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 })
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .constrainAs(gameMode) {
-                    top.linkTo(battleFormat.bottom)
-                    bottom.linkTo(gameCount.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }) {
-                if (mode == 0){
-                    Text(text = stringResource(id = R.string.round_robin_battle),
-                        fontSize = 40.sp)
-                }else{
-                    Text(text = stringResource(id = R.string.star_battle),
-                        fontSize = 40.sp)
-                }
-                Slider(value = mode.toFloat(), onValueChange = { mode = it.toInt() },
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .constrainAs(gameMode) {
+                        top.linkTo(battleFormat.bottom)
+                        bottom.linkTo(gameCount.top)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }) {
+
+                if (mode == 0) Text(
+                    text = stringResource(id = R.string.round_robin_battle),
+                    fontSize = 40.sp
+                )
+                else Text(text = stringResource(id = R.string.star_battle), fontSize = 40.sp)
+
+                Slider(
+                    value = mode.toFloat(), onValueChange = { mode = it.toInt() },
                     enabled = true,
-                    valueRange = 0f .. 1f,
-                    steps = 1)
+                    valueRange = 0f..1f,
+                    steps = 1
+                )
             }
 
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .constrainAs(gameCount) {
-                    top.linkTo(gameMode.bottom)
-                    bottom.linkTo(gameCount.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }) {
-                Slider(value = count.toFloat(), onValueChange = { count = it.toInt() },
-                    valueRange = 1f .. 10f,
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .constrainAs(gameCount) {
+                        top.linkTo(gameMode.bottom)
+                        bottom.linkTo(gameCount.top)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }
+            ) {
+                Slider(
+                    value = count.toFloat(), onValueChange = { count = it.toInt() },
+                    valueRange = 1f..10f,
                     enabled = true,
                     steps = 9,
-                    modifier = Modifier.weight(3.3f,false)
+                    modifier = Modifier.weight(3.3f, false)
                 )
-                Text(text = stringResource(id = R.string.round1,count),
+
+                Text(
+                    text = stringResource(id = R.string.round1, count),
                     fontSize = 27.sp,
-                    modifier = Modifier.weight(1.7f,false),
+                    modifier = Modifier.weight(1.7f, false),
                 )
             }
-            Text(text = stringResource(id = R.string.explanation_rule),
+
+            Text(
+                text = stringResource(id = R.string.explanation_rule),
                 fontSize = 19.sp,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -95,34 +117,43 @@ class SelectActivity : AppCompatActivity() {
                         bottom.linkTo(ruleExp.top)
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
-                    })
-            Text(text =
-            if (mode == 0) {
-                stringResource(id = R.string.rule_robin)
-            }else{
-                stringResource(id = R.string.rule_star)
-            },
+                    }
+            )
+
+            ruleText = if (mode == 0) stringResource(id = R.string.rule_robin)
+            else stringResource(id = R.string.rule_star)
+
+            Text(
+                text = ruleText,
                 fontSize = 19.sp,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
                     .constrainAs(ruleExp) {
-                    top.linkTo(rule.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                })
-            Button(onClick = { countApp.setCount(count)
-                countApp.setBattleFormat(mode)
-                moveMain() },
+                        top.linkTo(rule.bottom)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }
+            )
+
+            Button(
+                onClick = {
+                    countApp.setCount(count)
+                    countApp.setBattleFormat(mode)
+                    moveMain()
+                },
                 modifier = Modifier.constrainAs(gameStart) {
                     bottom.linkTo(parent.bottom)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                }) {
+                }
+            ) {
                 Text(text = stringResource(id = R.string.game_start), fontSize = 36.sp)
             }
         }
     }
-    private fun moveMain(){
-        val intent = Intent(application,MainActivity::class.java)
+
+    private fun moveMain() {
+        val intent = Intent(application, MainActivity::class.java)
         startActivity(intent)
     }
 }
