@@ -150,4 +150,7 @@ class TitleActivity : AppCompatActivity() {
             }
         }
     }
+
+    override fun onBackPressed() {
+    }
 }

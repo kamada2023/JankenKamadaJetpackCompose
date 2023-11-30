@@ -147,4 +147,6 @@ class FinalResultActivity : AppCompatActivity() {
         val intent = Intent(application, TitleActivity::class.java)
         startActivity(intent)
     }
+    override fun onBackPressed() {
+    }
 }

@@ -130,6 +130,11 @@ class ResultActivity : AppCompatActivity() {
                 contentDescription = null,
                 modifier = Modifier.fillMaxSize()
             )
+
+            else -> Image(painter = painterResource(id = R.drawable.imgres),
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize()
+            )
         }
     }
 
